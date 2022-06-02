@@ -1,0 +1,140 @@
+# This file will be used to generate all of the schema-*.json files in a bundle
+schema: draft-07
+name: "azure-mysql-flexible-server"
+description: "Azure Database for MySQL Flexible Server is a fully managed production-ready database service designed for more granular control and flexibility over database management functions and configuration settings."
+ref: github.com/massdriver-cloud/azure-mysql-flexible-server
+access: "private"
+type: "bundle"
+
+steps:
+  - path: src
+    provisioner: terraform
+
+params:
+  examples:
+    - __name: "Development"
+      mysql_version: "13"
+      size: "B1ms (1 vCore, 2 GiB memory, 640 max iops)"
+      storage_size_gb: 20
+      iops: 640
+      backup_retention_days: 7
+      high_availability: false
+    - __name: "Small/medium size databases"
+      mysql_version: "13"
+      size: "D2ds (2 vCores, 8 GiB memory, 3200 max iops)"
+      storage_size_gb: 64
+      iops: 3200
+      backup_retention_days: 14
+      high_availability: false
+    - __name: "Business critical workloads"
+      mysql_version: "13"
+      size: "E2ds (2 vCores, 16 GiB memory, 3200 max iops)"
+      storage_size_gb: 128
+      iops: 3200
+      backup_retention_days: 35
+      high_availability: true
+  required:
+    - mysql_version
+    - size
+    - storage_size_gb
+    - iops
+    - username
+  properties:
+    mysql_version:
+      title: MySQL version
+      description: The version of MySQL to use.
+      type: string
+      default: "5.7"
+      enum:
+        - "8.0.21"
+        - "5.7"
+    username:
+      title: Username
+      description: The administrator login for the MySQL Flexible Server. (Cannot be 'admin', 'root', 'administrator', 'username', 'azure_superuser', 'azure_pg_admin', 'guest', or 'public'.)
+      type: string
+      not:
+        enum:
+          - admin
+          - root
+          - administrator
+          - username
+          - azure_superuser
+          - azure_pg_admin
+          - guest
+          - public
+    size:
+      title: Compute size
+      description: Select the amount of cores, memory, and max iops you need for your workload (B = Burstable, D = General Purpose, E = Memory Optimized).
+      type: string
+      enum:
+        - B1ms (1 vCore, 2 GiB memory, 640 max iops)
+        - B2s (2 vCores, 4 GiB memory, 1280 max iops)
+        - B2ms (2 vCores, 8 GiB memory, 1780 max iops)
+        - B4ms (4 vCores, 16 GiB memory, 2400 max iops)
+        - B8ms (8 vCores, 32 GiB memory, 3100 max iops)
+        - B16ms (16 vCores, 64 GiB memory, 4300 max iops)
+        - D2ds (2 vCores, 8 GiB memory, 3200 max iops)
+        - D4ds (4 vCores, 16 GiB memory, 6400 max iops)
+        - D8ds (8 vCores, 32 GiB memory, 12800 max iops)
+        - D16ds (16 vCores, 64 GiB memory, 18000 max iops)
+        - D32ds (32 vCores, 128 GiB memory, 18000 max iops)
+        - D48ds (48 vCores, 192 GiB memory, 18000 max iops)
+        - D64ds (64 vCores, 256 GiB memory, 18000 max iops)
+        - E2ds (2 vCores, 16 GiB memory, 3200 max iops)
+        - E4ds (4 vCores, 32 GiB memory, 6400 max iops)
+        - E8ds (8 vCores, 64 GiB memory, 12800 max iops)
+        - E16ds (16 vCores, 128 GiB memory, 18000 max iops)
+        - E32ds (32 vCores, 256 GiB memory, 18000 max iops)
+        - E48ds (48 vCores, 384 GiB memory, 18000 max iops)
+        - E64ds (64 vCores, 432 GiB memory, 18000 max iops)
+    storage_gb:
+      title: Storage (GiB)
+      description: The storage you provision is the amount of storage capacity available to your Azure Database for MySQL server (minimum of 20 GiB, maximum of 16384 GiB).
+      minimum: 20
+      maximum: 16384
+      type: integer
+    iops:
+      title: Max IOPS
+      description: This feature enables you to provision additional IOPS above the complimentary IOPS limit. Max IOPS are determined by your compute size above.
+      minimum: 360
+      maximum: 20000
+      type: integer
+    backup_retention_days:
+      title: Backup Retention
+      description: How many days to retain MySQL database backups (minimum of 1, maximum of 35).
+      type: integer
+      default: 1
+      minimum: 1
+      maximum: 35
+    high_availability:
+      title: Enable High Availability
+      description: Zone redundant high availability deploys a standby replica within the same zone for automatic failover in the event of an outage.
+      type: boolean
+      default: false
+
+connections:
+  required:
+    - azure_service_principal
+    - vnet
+  properties:
+    azure_service_principal:
+      $ref: massdriver/azure-service-principal
+    vnet:
+      $ref: massdriver/azure-virtual-network
+
+artifacts:
+  required:
+    - authentication
+  properties:
+    authentication:
+      $ref: massdriver/mysql-authentication
+
+ui:
+  ui:order:
+    - mysql_version
+    - size
+    - iops
+    - storage_gb
+    - username
+    - backup_retention_days
+    - high_availability

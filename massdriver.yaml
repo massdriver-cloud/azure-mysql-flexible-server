@@ -87,7 +87,7 @@ params:
         - E32ds (32 vCores, 256 GiB memory, 18000 max iops)
         - E48ds (48 vCores, 384 GiB memory, 18000 max iops)
         - E64ds (64 vCores, 432 GiB memory, 18000 max iops)
-    storage_gb:
+    storage_size_gb:
       title: Storage (GiB)
       description: The storage you provision is the amount of storage capacity available to your Azure Database for MySQL server (minimum of 20 GiB, maximum of 16384 GiB).
       minimum: 20
@@ -134,7 +134,7 @@ ui:
     - mysql_version
     - size
     - iops
-    - storage_gb
+    - storage_size_gb
     - username
     - backup_retention_days
     - high_availability

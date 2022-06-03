@@ -28,8 +28,11 @@ locals {
 }
 
 resource "random_password" "master_password" {
-  length  = 10
-  special = false
+  length      = 16
+  special     = false
+  min_lower   = 1
+  min_upper   = 1
+  min_numeric = 1
 }
 
 resource "azurerm_resource_group" "main" {

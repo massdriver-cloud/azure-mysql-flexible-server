@@ -65,7 +65,7 @@ resource "azurerm_mysql_flexible_server" "main" {
   }
 
   storage {
-    size_gb = var.storage_gb
+    size_gb = var.storage_size_gb
     iops    = var.iops
   }
   sku_name = local.sku

@@ -95,9 +95,9 @@ params:
       type: integer
     iops:
       title: Max IOPS
-      description: This feature enables you to provision additional IOPS above the complimentary IOPS limit. Max IOPS are determined by your compute size above.
-      minimum: 360
-      maximum: 20000
+      description: This feature enables you to provision additional IOPS above the complimentary IOPS limit. Max IOPS are determined by your compute size above (minimum of 450, maximum determined by your Compute size).
+      minimum: 450
+      maximum: 18000
       type: integer
     backup_retention_days:
       title: Backup Retention

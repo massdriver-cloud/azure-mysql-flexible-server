@@ -14,7 +14,7 @@ locals {
 }
 
 module "cpu_metric_alert" {
-  source              = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=8ca8b1f"
+  source              = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=c46bc59"
   scopes              = [azurerm_mysql_flexible_server.main.id]
   resource_group_name = azurerm_resource_group.main.name
   severity            = local.scope_config.severity
@@ -37,7 +37,7 @@ module "cpu_metric_alert" {
 }
 
 module "memory_metric_alert" {
-  source              = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=8ca8b1f"
+  source              = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=c46bc59"
   scopes              = [azurerm_mysql_flexible_server.main.id]
   resource_group_name = azurerm_resource_group.main.name
   severity            = local.scope_config.severity
@@ -60,7 +60,7 @@ module "memory_metric_alert" {
 }
 
 module "storage_metric_alert" {
-  source              = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=8ca8b1f"
+  source              = "github.com/massdriver-cloud/terraform-modules//azure-monitor-metrics-alarm?ref=c46bc59"
   scopes              = [azurerm_mysql_flexible_server.main.id]
   resource_group_name = azurerm_resource_group.main.name
   severity            = local.scope_config.severity

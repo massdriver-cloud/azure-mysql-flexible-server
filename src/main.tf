@@ -22,9 +22,6 @@ locals {
     "E64ds (64 vCores, 432 GiB memory, 18000 max iops)" = "MO_Standard_E64ds_v4"
   }
   sku = lookup(local.size_map, var.size, "")
-
-  subnet_id           = var.vnet.data.infrastructure.delegated_subnets["Microsoft.DBforMySQL/flexibleServers"].subnet_id
-  private_dns_zone_id = var.vnet.data.infrastructure.delegated_subnets["Microsoft.DBforMySQL/flexibleServers"].private_dns_zone_id
 }
 
 resource "random_password" "master_password" {
@@ -40,13 +37,26 @@ resource "azurerm_resource_group" "main" {
   location = var.vnet.specs.azure.region
 }
 
+
+resource "azurerm_private_dns_zone" "main" {
+  name                = "${var.md_metadata.name_prefix}-dns.mysql.database.azure.com"
+  resource_group_name = azurerm_resource_group.main.name
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "main" {
+  name                  = var.md_metadata.name_prefix
+  resource_group_name   = azurerm_resource_group.main.name
+  private_dns_zone_name = azurerm_private_dns_zone.main.name
+  virtual_network_id    = var.vnet.data.infrastructure.id
+}
+
 resource "azurerm_mysql_flexible_server" "main" {
   name                   = var.md_metadata.name_prefix
   resource_group_name    = azurerm_resource_group.main.name
   location               = var.vnet.specs.azure.region
   version                = var.mysql_version
-  delegated_subnet_id    = local.subnet_id
-  private_dns_zone_id    = local.private_dns_zone_id
+  delegated_subnet_id    = azurerm_subnet.main.id
+  private_dns_zone_id    = azurerm_private_dns_zone.main.id
   administrator_login    = var.username
   administrator_password = random_password.master_password.result
   backup_retention_days  = var.backup_retention_days
@@ -65,8 +75,12 @@ resource "azurerm_mysql_flexible_server" "main" {
   }
 
   storage {
-    size_gb = var.storage_size_gb
+    size_gb = var.storage_gb
     iops    = var.iops
   }
   sku_name = local.sku
+
+  depends_on = [
+    azurerm_private_dns_zone_virtual_network_link.main
+  ]
 }

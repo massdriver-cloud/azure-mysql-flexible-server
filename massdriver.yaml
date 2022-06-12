@@ -35,10 +35,11 @@ params:
       high_availability: true
   required:
     - mysql_version
-    - size
-    - storage_size_gb
-    - iops
     - username
+    - size
+    - storage_gb
+    - iops
+    - cidr
   properties:
     mysql_version:
       title: MySQL version
@@ -87,7 +88,7 @@ params:
         - E32ds (32 vCores, 256 GiB memory, 18000 max iops)
         - E48ds (48 vCores, 384 GiB memory, 18000 max iops)
         - E64ds (64 vCores, 432 GiB memory, 18000 max iops)
-    storage_size_gb:
+    storage_gb:
       title: Storage (GiB)
       description: The storage you provision is the amount of storage capacity available to your Azure Database for MySQL server (minimum of 20 GiB, maximum of 16384 GiB).
       minimum: 20
@@ -99,6 +100,13 @@ params:
       minimum: 450
       maximum: 18000
       type: integer
+    cidr:
+      title: Subnet CIDR
+      type: string
+      description: Specify a /28 CIDR range within your vnet to create subnet for the database
+      pattern: ^(?:10\.(?:[0-9]|[0-9]{2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])|172\.(?:1[6-9]|2[0-9]|3[0-1])|192\.168)(?:\.(?:[0-9]|[0-9]{2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){2}\/28$
+      message:
+        pattern: "Must be a /28 range from within the VNet CIDR"
     backup_retention_days:
       title: Backup Retention
       description: How many days to retain MySQL database backups (minimum of 1, maximum of 35).
@@ -134,7 +142,8 @@ ui:
     - mysql_version
     - size
     - iops
-    - storage_size_gb
+    - storage_gb
     - username
+    - cidr
     - backup_retention_days
     - high_availability

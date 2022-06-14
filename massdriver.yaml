@@ -14,35 +14,31 @@ params:
   examples:
     - __name: "Development"
       mysql_version: "13"
-      size: "B1ms (1 vCore, 2 GiB memory, 640 max iops)"
-      storage_size_gb: 20
-      iops: 640
+      sku_name: B_Standard_B1ms
+      storage_gb: 32
       backup_retention_days: 7
       high_availability: false
     - __name: "Small/medium size databases"
       mysql_version: "13"
-      size: "D2ds (2 vCores, 8 GiB memory, 3200 max iops)"
-      storage_size_gb: 64
-      iops: 3200
+      sku_name: GP_Standard_D2ds_v4
+      storage_gb: 256
       backup_retention_days: 14
       high_availability: false
     - __name: "Business critical workloads"
       mysql_version: "13"
-      size: "E2ds (2 vCores, 16 GiB memory, 3200 max iops)"
-      storage_size_gb: 128
-      iops: 3200
+      sku_name: MO_Standard_E2ds_v4
+      storage_gb: 512
       backup_retention_days: 35
       high_availability: true
   required:
     - mysql_version
     - username
-    - size
+    - sku_name
     - storage_gb
-    - iops
     - cidr
   properties:
     mysql_version:
-      title: MySQL version
+      title: Version
       description: The version of MySQL to use.
       type: string
       default: "5.7"
@@ -63,43 +59,78 @@ params:
           - azure_pg_admin
           - guest
           - public
-    size:
+    sku_name:
       title: Compute size
       description: Select the amount of cores, memory, and max iops you need for your workload (B = Burstable, D = General Purpose, E = Memory Optimized).
       type: string
-      enum:
-        - B1ms (1 vCore, 2 GiB memory, 640 max iops)
-        - B2s (2 vCores, 4 GiB memory, 1280 max iops)
-        - B2ms (2 vCores, 8 GiB memory, 1780 max iops)
-        - B4ms (4 vCores, 16 GiB memory, 2400 max iops)
-        - B8ms (8 vCores, 32 GiB memory, 3100 max iops)
-        - B16ms (16 vCores, 64 GiB memory, 4300 max iops)
-        - D2ds (2 vCores, 8 GiB memory, 3200 max iops)
-        - D4ds (4 vCores, 16 GiB memory, 6400 max iops)
-        - D8ds (8 vCores, 32 GiB memory, 12800 max iops)
-        - D16ds (16 vCores, 64 GiB memory, 18000 max iops)
-        - D32ds (32 vCores, 128 GiB memory, 18000 max iops)
-        - D48ds (48 vCores, 192 GiB memory, 18000 max iops)
-        - D64ds (64 vCores, 256 GiB memory, 18000 max iops)
-        - E2ds (2 vCores, 16 GiB memory, 3200 max iops)
-        - E4ds (4 vCores, 32 GiB memory, 6400 max iops)
-        - E8ds (8 vCores, 64 GiB memory, 12800 max iops)
-        - E16ds (16 vCores, 128 GiB memory, 18000 max iops)
-        - E32ds (32 vCores, 256 GiB memory, 18000 max iops)
-        - E48ds (48 vCores, 384 GiB memory, 18000 max iops)
-        - E64ds (64 vCores, 432 GiB memory, 18000 max iops)
+      oneOf:
+        - title: B1ms (1 vCore, 2 GiB memory, 640 max iops)
+          const: B_Standard_B1ms
+        - title: B2s (2 vCores, 4 GiB memory, 1280 max iops)
+          const: B_Standard_B2s
+        - title: B2ms (2 vCores, 8 GiB memory, 1780 max iops)
+          const: B_Standard_B2ms
+        - title: B4ms (4 vCores, 16 GiB memory, 2400 max iops)
+          const: B_Standard_B4ms
+        - title: B8ms (8 vCores, 32 GiB memory, 3100 max iops)
+          const: B_Standard_B8ms
+        - title: B16ms (16 vCores, 64 GiB memory, 4300 max iops)
+          const: B_Standard_B16ms
+        - title: D2ds (2 vCores, 8 GiB memory, 3200 max iops)
+          const: GP_Standard_D2ds_v4
+        - title: D4ds (4 vCores, 16 GiB memory, 6400 max iops)
+          const: GP_Standard_D4ds_v4
+        - title: D8ds (8 vCores, 32 GiB memory, 12800 max iops)
+          const: GP_Standard_D8ds_v4
+        - title: D16ds (16 vCores, 64 GiB memory, 18000 max iops)
+          const: GP_Standard_D16ds_v4
+        - title: D32ds (32 vCores, 128 GiB memory, 18000 max iops)
+          const: GP_Standard_D32ds_v4
+        - title: D48ds (48 vCores, 192 GiB memory, 18000 max iops)
+          const: GP_Standard_D48ds_v4
+        - title: D64ds (64 vCores, 256 GiB memory, 18000 max iops)
+          const: GP_Standard_D64ds_v4
+        - title: E2ds (2 vCores, 16 GiB memory, 3200 max iops)
+          const: MO_Standard_E2ds_v4
+        - title: E4ds (4 vCores, 32 GiB memory, 6400 max iops)
+          const: MO_Standard_E4ds_v4
+        - title: E8ds (8 vCores, 64 GiB memory, 12800 max iops)
+          const: MO_Standard_E8ds_v4
+        - title: E16ds (16 vCores, 128 GiB memory, 18000 max iops)
+          const: MO_Standard_E16ds_v4
+        - title: E32ds (32 vCores, 256 GiB memory, 18000 max iops)
+          const: MO_Standard_E32ds_v4
+        - title: E48ds (48 vCores, 384 GiB memory, 18000 max iops)
+          const: MO_Standard_E48ds_v4
+        - title: E64ds (64 vCores, 432 GiB memory, 18000 max iops)
+          const: MO_Standard_E64ds_v4
     storage_gb:
-      title: Storage (GiB)
-      description: The storage you provision is the amount of storage capacity available to your Azure Database for MySQL server (minimum of 20 GiB, maximum of 16384 GiB).
-      minimum: 20
-      maximum: 16384
+      title: Storage
+      description: The storage you provision is the amount of storage capacity available to your Azure Database for MySQL server.
       type: integer
-    iops:
-      title: Max IOPS
-      description: This feature enables you to provision additional IOPS above the complimentary IOPS limit (minimum of 450, maximum determined by your Compute size).
-      minimum: 450
-      maximum: 18000
-      type: integer
+      oneOf:
+        - title: 20GB
+          const: 20
+        - title: 32GB
+          const: 32
+        - title: 64GB
+          const: 64
+        - title: 128GB
+          const: 128
+        - title: 256GB
+          const: 256
+        - title: 512GB
+          const: 512
+        - title: 1TB
+          const: 1024
+        - title: 2TB
+          const: 2048
+        - title: 4TB
+          const: 4096
+        - title: 8TB
+          const: 8192
+        - title: 16TB
+          const: 16384
     cidr:
       title: Subnet CIDR
       type: string
@@ -111,7 +142,7 @@ params:
       title: Backup Retention
       description: How many days to retain MySQL database backups (minimum of 1, maximum of 35).
       type: integer
-      default: 1
+      default: 7
       minimum: 1
       maximum: 35
     high_availability:
@@ -140,8 +171,7 @@ artifacts:
 ui:
   ui:order:
     - mysql_version
-    - size
-    - iops
+    - sku_name
     - storage_gb
     - username
     - cidr

@@ -13,16 +13,14 @@ steps:
 params:
   examples:
     - __name: Development
-      mysql_version: "13"
       sku_name: B_Standard_B1ms
       storage_gb: 32
-      backup_retention_days: 3
+      backup_retention_days: 1
       high_availability: false
     - __name: Production
-      mysql_version: "13"
       sku_name: GP_Standard_D2ds_v4
       storage_gb: 256
-      backup_retention_days: 21
+      backup_retention_days: 30
       high_availability: true
   required:
     - mysql_version

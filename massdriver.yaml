@@ -13,12 +13,12 @@ steps:
 params:
   examples:
     - __name: Development
-      sku_name: B_Standard_B1ms
+      sku_name: GP_Standard_D2ds_v4
       storage_gb: 32
       backup_retention_days: 1
       high_availability: false
     - __name: Production
-      sku_name: GP_Standard_D2ds_v4
+      sku_name: MO_Standard_E4ds_v4
       storage_gb: 256
       backup_retention_days: 30
       high_availability: true
@@ -55,21 +55,9 @@ params:
           - public
     sku_name:
       title: Compute size
-      description: Select the amount of cores, memory, and max iops you need for your workload (B = Burstable, D = General Purpose, E = Memory Optimized).
+      description: Select the amount of cores, memory, and max iops you need for your workload (D = General Purpose, E = Memory Optimized).
       type: string
       oneOf:
-        - title: B1ms (1 vCore, 2 GiB memory, 640 max iops)
-          const: B_Standard_B1ms
-        - title: B2s (2 vCores, 4 GiB memory, 1280 max iops)
-          const: B_Standard_B2s
-        - title: B2ms (2 vCores, 8 GiB memory, 1780 max iops)
-          const: B_Standard_B2ms
-        - title: B4ms (4 vCores, 16 GiB memory, 2400 max iops)
-          const: B_Standard_B4ms
-        - title: B8ms (8 vCores, 32 GiB memory, 3100 max iops)
-          const: B_Standard_B8ms
-        - title: B16ms (16 vCores, 64 GiB memory, 4300 max iops)
-          const: B_Standard_B16ms
         - title: D2ds (2 vCores, 8 GiB memory, 3200 max iops)
           const: GP_Standard_D2ds_v4
         - title: D4ds (4 vCores, 16 GiB memory, 6400 max iops)
@@ -141,8 +129,7 @@ params:
       minimum: 1
       maximum: 35
     high_availability:
-      title: Enable High Availability
-      description: Zone redundant high availability deploys a standby replica within the same zone for automatic failover in the event of an outage. Burstable compute SKUs do not support high availability.
+      title: Enable High Availability (not available for North Central US)
       type: boolean
       default: false
 

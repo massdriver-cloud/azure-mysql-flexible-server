@@ -1,14 +1,9 @@
-# This file will be used to generate all of the schema-*.json files in a bundle
 schema: draft-07
 name: "azure-mysql-flexible-server"
 description: "Azure Database for MySQL Flexible Server is a fully managed production-ready database service designed for more granular control and flexibility over database management functions and configuration settings."
 ref: github.com/massdriver-cloud/azure-mysql-flexible-server
 access: "private"
 type: "bundle"
-
-steps:
-  - path: src
-    provisioner: terraform
 
 params:
   examples:
@@ -159,3 +154,4 @@ ui:
     - cidr
     - backup_retention_days
     - high_availability
+    - "*"

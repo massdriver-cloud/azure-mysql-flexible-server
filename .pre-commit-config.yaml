@@ -48,6 +48,8 @@ repos:
       - id: check-json
       - id: check-yaml
       - id: end-of-file-fixer
+      - id: detect-aws-credentials
+        args: [--allow-missing-credentials]
       - id: no-commit-to-branch
         args:
           - "-b"

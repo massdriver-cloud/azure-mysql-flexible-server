@@ -37,57 +37,325 @@ Our bundles aren't intended to be used locally, outside of testing. Instead, our
 
 Bundles are the basic building blocks of infrastructure, applications, and architectures in [Massdriver][website]. Read more [here](https://docs.massdriver.cloud/concepts/bundles).
 
-## Security & Compliance
-
-<!-- COMPLIANCE:START -->
-
-Security and compliance scanning of our bundles is performed using [Bridgecrew](https://www.bridgecrew.cloud/). Massdriver also offers security and compliance scanning of operational infrastructure configured and deployed using the platform.
-
-| Benchmark | Description |
-|--------|---------------|
-| [![Infrastructure Security](https://www.bridgecrew.cloud/badges/github/massdriver-cloud/azure-mysql-flexible-server/general)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=massdriver-cloud%2Fazure-mysql-flexible-server&benchmark=INFRASTRUCTURE+SECURITY) | Infrastructure Security Compliance |
-| [![CIS AZURE](https://www.bridgecrew.cloud/badges/github/massdriver-cloud/azure-mysql-flexible-server/cis_azure)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=massdriver-cloud%2Fazure-mysql-flexible-server&benchmark=CIS+AZURE+V1.1) | Center for Internet Security, AZURE Compliance |
-| [![PCI-DSS](https://www.bridgecrew.cloud/badges/github/massdriver-cloud/azure-mysql-flexible-server/pci)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=massdriver-cloud%2Fazure-mysql-flexible-server&benchmark=PCI-DSS+V3.2) | Payment Card Industry Data Security Standards Compliance |
-| [![NIST-800-53](https://www.bridgecrew.cloud/badges/github/massdriver-cloud/azure-mysql-flexible-server/nist)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=massdriver-cloud%2Fazure-mysql-flexible-server&benchmark=NIST-800-53) | National Institute of Standards and Technology Compliance |
-| [![ISO27001](https://www.bridgecrew.cloud/badges/github/massdriver-cloud/azure-mysql-flexible-server/iso)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=massdriver-cloud%2Fazure-mysql-flexible-server&benchmark=ISO27001) | Information Security Management System, ISO/IEC 27001 Compliance |
-| [![SOC2](https://www.bridgecrew.cloud/badges/github/massdriver-cloud/azure-mysql-flexible-server/soc2)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=massdriver-cloud%2Fazure-mysql-flexible-server&benchmark=SOC2)| Service Organization Control 2 Compliance |
-| [![CIS GCP](https://www.bridgecrew.cloud/badges/github/massdriver-cloud/azure-mysql-flexible-server/cis_gcp)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=massdriver-cloud%2Fazure-mysql-flexible-server&benchmark=CIS+GCP+V1.1) | Center for Internet Security, GCP Compliance |
-| [![HIPAA](https://www.bridgecrew.cloud/badges/github/massdriver-cloud/azure-mysql-flexible-server/hipaa)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=massdriver-cloud%2Fazure-mysql-flexible-server&benchmark=HIPAA) | Health Insurance Portability and Accountability Compliance |
-
-<!-- COMPLIANCE:END -->
-
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
-
 ## Bundle
 
 ### Params
 
-<!-- PARAMS:START -->
+Form input parameters for configuring a bundle for deployment.
 
-**Params coming soon**
+<details>
+<summary>View</summary>
+
+<!-- PARAMS:START -->
+## Properties
+
+- **`backup_retention_days`** *(integer)*: How many days to retain MySQL database backups (minimum of 1, maximum of 35). Minimum: `1`. Maximum: `35`. Default: `7`.
+- **`cidr`** *(string)*: Specify a /28 CIDR range within your vnet to create subnet for the database. The subnet CIDR cannot be changed after creation.
+- **`high_availability`** *(boolean)*: Default: `False`.
+- **`mysql_version`** *(string)*: The version of MySQL to use. The version cannot be changed. Must be one of: `['8.0.21', '5.7']`. Default: `5.7`.
+- **`sku_name`** *(string)*: Select the amount of cores, memory, and max iops you need for your workload (D = General Purpose, E = Memory Optimized).
+  - **One of**
+    - D2ds (2 vCores, 8 GiB memory, 3200 max iops)
+    - D4ds (4 vCores, 16 GiB memory, 6400 max iops)
+    - D8ds (8 vCores, 32 GiB memory, 12800 max iops)
+    - D16ds (16 vCores, 64 GiB memory, 18000 max iops)
+    - D32ds (32 vCores, 128 GiB memory, 18000 max iops)
+    - D48ds (48 vCores, 192 GiB memory, 18000 max iops)
+    - D64ds (64 vCores, 256 GiB memory, 18000 max iops)
+    - E2ds (2 vCores, 16 GiB memory, 3200 max iops)
+    - E4ds (4 vCores, 32 GiB memory, 6400 max iops)
+    - E8ds (8 vCores, 64 GiB memory, 12800 max iops)
+    - E16ds (16 vCores, 128 GiB memory, 18000 max iops)
+    - E32ds (32 vCores, 256 GiB memory, 18000 max iops)
+    - E48ds (48 vCores, 384 GiB memory, 18000 max iops)
+    - E64ds (64 vCores, 432 GiB memory, 18000 max iops)
+- **`storage_gb`** *(integer)*: The storage you provision is the amount of storage capacity available to your Azure Database for MySQL server. Storage size cannot be scaled down.
+  - **One of**
+    - 20GB
+    - 32GB
+    - 64GB
+    - 128GB
+    - 256GB
+    - 512GB
+    - 1TB
+    - 2TB
+    - 4TB
+    - 8TB
+    - 16TB
+- **`username`** *(string)*: The administrator login for the MySQL Flexible Server. Username cannot be changed after creation. (Username cannot be 'admin', 'root', 'administrator', 'username', 'azure_superuser', 'azure_pg_admin', 'guest', or 'public'.).
+## Examples
+
+  ```json
+  {
+      "__name": "Development",
+      "backup_retention_days": 1,
+      "high_availability": false,
+      "sku_name": "GP_Standard_D2ds_v4",
+      "storage_gb": 32
+  }
+  ```
+
+  ```json
+  {
+      "__name": "Production",
+      "backup_retention_days": 30,
+      "high_availability": true,
+      "sku_name": "MO_Standard_E4ds_v4",
+      "storage_gb": 256
+  }
+  ```
 
 <!-- PARAMS:END -->
 
+</details>
+
 ### Connections
 
+Connections from other bundles that this bundle depends on.
+
+<details>
+<summary>View</summary>
+
 <!-- CONNECTIONS:START -->
+## Properties
 
-**Connections coming soon**
+- **`azure_service_principal`** *(object)*: . Cannot contain additional properties.
+  - **`data`** *(object)*
+    - **`client_id`** *(string)*: A valid UUID field.
 
+      Examples:
+      ```json
+      "123xyz99-ab34-56cd-e7f8-456abc1q2w3e"
+      ```
+
+    - **`client_secret`** *(string)*
+    - **`subscription_id`** *(string)*: A valid UUID field.
+
+      Examples:
+      ```json
+      "123xyz99-ab34-56cd-e7f8-456abc1q2w3e"
+      ```
+
+    - **`tenant_id`** *(string)*: A valid UUID field.
+
+      Examples:
+      ```json
+      "123xyz99-ab34-56cd-e7f8-456abc1q2w3e"
+      ```
+
+  - **`specs`** *(object)*
+- **`vnet`** *(object)*: . Cannot contain additional properties.
+  - **`data`** *(object)*
+    - **`infrastructure`** *(object)*
+      - **`cidr`** *(string)*
+
+        Examples:
+        ```json
+        "10.100.0.0/16"
+        ```
+
+        ```json
+        "192.24.12.0/22"
+        ```
+
+      - **`default_subnet_id`** *(string)*: Azure Resource ID.
+
+        Examples:
+        ```json
+        "/subscriptions/12345678-1234-1234-abcd-1234567890ab/resourceGroups/resource-group-name/providers/Microsoft.Network/virtualNetworks/network-name"
+        ```
+
+      - **`id`** *(string)*: Azure Resource ID.
+
+        Examples:
+        ```json
+        "/subscriptions/12345678-1234-1234-abcd-1234567890ab/resourceGroups/resource-group-name/providers/Microsoft.Network/virtualNetworks/network-name"
+        ```
+
+  - **`specs`** *(object)*
+    - **`azure`** *(object)*: .
+      - **`region`** *(string)*: Select the Azure region you'd like to provision your resources in.
+        - **One of**
+          - East US
+          - North Central US
+          - South Central US
+          - West US
 <!-- CONNECTIONS:END -->
+
+</details>
 
 ### Artifacts
 
-<!-- ARTIFACTS:START -->
+Resources created by this bundle that can be connected to other bundles.
 
-**Artifacts coming soon**
+<details>
+<summary>View</summary>
+
+<!-- ARTIFACTS:START -->
+## Properties
+
+- **`authentication`** *(object)*: Authentication parameters for a MySQL database. Cannot contain additional properties.
+  - **`data`** *(object)*: Cannot contain additional properties.
+    - **`authentication`** *(object)*
+      - **`hostname`** *(string)*
+      - **`password`** *(string)*
+      - **`port`** *(integer)*: Port number. Minimum: `0`. Maximum: `65535`.
+      - **`username`** *(string)*
+    - **`infrastructure`** *(object)*: Cloud specific MySQL configuration data.
+      - **One of**
+        - AWS Infrastructure ARN*object*: Minimal AWS Infrastructure Config. Cannot contain additional properties.
+          - **`arn`** *(string)*: Amazon Resource Name.
+
+            Examples:
+            ```json
+            "arn:aws:rds::ACCOUNT_NUMBER:db/prod"
+            ```
+
+            ```json
+            "arn:aws:ec2::ACCOUNT_NUMBER:vpc/vpc-foo"
+            ```
+
+        - Azure Infrastructure Resource ID*object*: Minimal Azure Infrastructure Config. Cannot contain additional properties.
+          - **`ari`** *(string)*: Azure Resource ID.
+
+            Examples:
+            ```json
+            "/subscriptions/12345678-1234-1234-abcd-1234567890ab/resourceGroups/resource-group-name/providers/Microsoft.Network/virtualNetworks/network-name"
+            ```
+
+        - GCP Infrastructure Name*object*: GCP Infrastructure Config For Resources With A Name Not A GRN. Cannot contain additional properties.
+          - **`name`** *(string)*: Name Of GCP Resource.
+
+            Examples:
+            ```json
+            "my-cloud-function"
+            ```
+
+            ```json
+            "my-sql-instance"
+            ```
+
+    - **`security`** *(object)*: TBD.
+      - **Any of**
+        - AWS Security information*object*: Informs downstream services of network and/or IAM policies. Cannot contain additional properties.
+          - **`iam`** *(object)*: IAM Policies. Cannot contain additional properties.
+            - **`^[a-z-/]+$`** *(object)*
+              - **`policy_arn`** *(string)*: AWS IAM policy ARN.
+
+                Examples:
+                ```json
+                "arn:aws:rds::ACCOUNT_NUMBER:db/prod"
+                ```
+
+                ```json
+                "arn:aws:ec2::ACCOUNT_NUMBER:vpc/vpc-foo"
+                ```
+
+          - **`network`** *(object)*: AWS security group rules to inform downstream services of ports to open for communication. Cannot contain additional properties.
+            - **`^[a-z-]+$`** *(object)*
+              - **`arn`** *(string)*: Amazon Resource Name.
+
+                Examples:
+                ```json
+                "arn:aws:rds::ACCOUNT_NUMBER:db/prod"
+                ```
+
+                ```json
+                "arn:aws:ec2::ACCOUNT_NUMBER:vpc/vpc-foo"
+                ```
+
+              - **`port`** *(integer)*: Port number. Minimum: `0`. Maximum: `65535`.
+              - **`protocol`** *(string)*: Must be one of: `['tcp', 'udp']`.
+        - Security*object*: Azure Security Configuration. Cannot contain additional properties.
+          - **`iam`** *(object)*: IAM Roles And Scopes. Cannot contain additional properties.
+            - **`^[a-z/-]+$`** *(object)*
+              - **`role`**: Azure Role.
+
+                Examples:
+                ```json
+                "Storage Blob Data Reader"
+                ```
+
+              - **`scope`** *(string)*: Azure IAM Scope.
+        - Security*object*: GCP Security Configuration. Cannot contain additional properties.
+          - **`iam`** *(object)*: IAM Roles And Conditions. Cannot contain additional properties.
+            - **`^[a-z-/]+$`** *(object)*
+              - **`condition`** *(string)*: GCP IAM Condition.
+              - **`role`**: GCP Role.
+
+                Examples:
+                ```json
+                "roles/owner"
+                ```
+
+                ```json
+                "roles/redis.editor"
+                ```
+
+                ```json
+                "roles/storage.objectCreator"
+                ```
+
+                ```json
+                "roles/storage.legacyObjectReader"
+                ```
+
+  - **`specs`** *(object)*: Cannot contain additional properties.
+    - **`rdbms`** *(object)*: Common metadata for relational databases.
+      - **`engine`** *(string)*: The type of database server.
+
+        Examples:
+        ```json
+        "postgresql"
+        ```
+
+        ```json
+        "mysql"
+        ```
+
+      - **`engine_version`** *(string)*: The cloud provider's database version.
+
+        Examples:
+        ```json
+        "5.7.mysql_aurora.2.03.2"
+        ```
+
+      - **`version`** *(string)*: The database version. Default: ``.
+
+        Examples:
+        ```json
+        "12.2"
+        ```
+
+        ```json
+        "5.7"
+        ```
+
+
+      Examples:
+      ```json
+      {
+          "engine": "postgresql",
+          "engine_version": "10.14",
+          "version": "10.14"
+      }
+      ```
+
+      ```json
+      {
+          "engine": "mysql",
+          "engine_version": "5.7.mysql_aurora.2.03.2",
+          "version": "5.7"
+      }
+      ```
 
 <!-- ARTIFACTS:END -->
 
-<!-- CONTRIBUTING:START -->
+</details>
 
 ## Contributing
+
+<!-- CONTRIBUTING:START -->
 
 ### Bug Reports & Feature Requests
 
@@ -118,6 +386,7 @@ Please connect with us!
 [![LinkedIn][linkedin_shield]][linkedin_url]
 [![Twitter][twitter_shield]][twitter_url]
 [![YouTube][youtube_shield]][youtube_url]
+[![Reddit][reddit_shield]][reddit_url]
 
 <!-- markdownlint-disable -->
 

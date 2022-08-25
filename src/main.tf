@@ -9,12 +9,16 @@ resource "random_password" "master_password" {
 resource "azurerm_resource_group" "main" {
   name     = var.md_metadata.name_prefix
   location = var.vnet.specs.azure.region
+
+  tags = var.md_metadata.default_tags
 }
 
 
 resource "azurerm_private_dns_zone" "main" {
   name                = "${var.md_metadata.name_prefix}-dns.mysql.database.azure.com"
   resource_group_name = azurerm_resource_group.main.name
+
+  tags = var.md_metadata.default_tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "main" {
@@ -22,6 +26,8 @@ resource "azurerm_private_dns_zone_virtual_network_link" "main" {
   resource_group_name   = azurerm_resource_group.main.name
   private_dns_zone_name = azurerm_private_dns_zone.main.name
   virtual_network_id    = var.vnet.data.infrastructure.id
+
+  tags = var.md_metadata.default_tags
 }
 
 resource "azurerm_mysql_flexible_server" "main" {
@@ -56,4 +62,6 @@ resource "azurerm_mysql_flexible_server" "main" {
   depends_on = [
     azurerm_private_dns_zone_virtual_network_link.main
   ]
+
+  tags = var.md_metadata.default_tags
 }

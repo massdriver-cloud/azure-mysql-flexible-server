@@ -8,125 +8,137 @@ type: "bundle"
 params:
   examples:
     - __name: Development
-      sku_name: GP_Standard_D2ds_v4
-      storage_gb: 32
-      backup_retention_days: 1
-      high_availability: false
+      database:
+        sku_name: GP_Standard_D2ds_v4
+        storage_gb: 32
+        high_availability: false
+      backup:
+        backup_retention_days: 1
     - __name: Production
-      sku_name: MO_Standard_E4ds_v4
-      storage_gb: 256
-      backup_retention_days: 30
-      high_availability: true
-  required:
-    - mysql_version
-    - username
-    - sku_name
-    - storage_gb
-    - cidr
+      database:
+        sku_name: MO_Standard_E4ds_v4
+        storage_gb: 256
+        high_availability: true
+      backup:
+        backup_retention_days: 30
   properties:
-    mysql_version:
-      title: Version
-      description: The version of MySQL to use. The version cannot be changed.
-      $md.immutable: true
-      type: string
-      default: "5.7"
-      enum:
-        - "8.0.21"
-        - "5.7"
-    username:
-      title: Username
-      description: The administrator login for the MySQL Flexible Server. Username cannot be changed after creation. (Username cannot be 'admin', 'root', 'administrator', 'username', 'azure_superuser', 'azure_pg_admin', 'guest', or 'public'.)
-      type: string
-      $md.immutable: true
-      not:
-        enum:
-          - admin
-          - root
-          - administrator
-          - username
-          - azure_superuser
-          - azure_pg_admin
-          - guest
-          - public
-    sku_name:
-      title: Compute size
-      description: Select the amount of cores, memory, and max iops you need for your workload (D = General Purpose, E = Memory Optimized).
-      type: string
-      oneOf:
-        - title: D2ds (2 vCores, 8 GiB memory, 3200 max iops)
-          const: GP_Standard_D2ds_v4
-        - title: D4ds (4 vCores, 16 GiB memory, 6400 max iops)
-          const: GP_Standard_D4ds_v4
-        - title: D8ds (8 vCores, 32 GiB memory, 12800 max iops)
-          const: GP_Standard_D8ds_v4
-        - title: D16ds (16 vCores, 64 GiB memory, 18000 max iops)
-          const: GP_Standard_D16ds_v4
-        - title: D32ds (32 vCores, 128 GiB memory, 18000 max iops)
-          const: GP_Standard_D32ds_v4
-        - title: D48ds (48 vCores, 192 GiB memory, 18000 max iops)
-          const: GP_Standard_D48ds_v4
-        - title: D64ds (64 vCores, 256 GiB memory, 18000 max iops)
-          const: GP_Standard_D64ds_v4
-        - title: E2ds (2 vCores, 16 GiB memory, 3200 max iops)
-          const: MO_Standard_E2ds_v4
-        - title: E4ds (4 vCores, 32 GiB memory, 6400 max iops)
-          const: MO_Standard_E4ds_v4
-        - title: E8ds (8 vCores, 64 GiB memory, 12800 max iops)
-          const: MO_Standard_E8ds_v4
-        - title: E16ds (16 vCores, 128 GiB memory, 18000 max iops)
-          const: MO_Standard_E16ds_v4
-        - title: E32ds (32 vCores, 256 GiB memory, 18000 max iops)
-          const: MO_Standard_E32ds_v4
-        - title: E48ds (48 vCores, 384 GiB memory, 18000 max iops)
-          const: MO_Standard_E48ds_v4
-        - title: E64ds (64 vCores, 432 GiB memory, 18000 max iops)
-          const: MO_Standard_E64ds_v4
-    storage_gb:
-      title: Storage
-      description: The storage you provision is the amount of storage capacity available to your Azure Database for MySQL server. Storage size cannot be scaled down.
-      type: integer
-      oneOf:
-        - title: 20GB
-          const: 20
-        - title: 32GB
-          const: 32
-        - title: 64GB
-          const: 64
-        - title: 128GB
-          const: 128
-        - title: 256GB
-          const: 256
-        - title: 512GB
-          const: 512
-        - title: 1TB
-          const: 1024
-        - title: 2TB
-          const: 2048
-        - title: 4TB
-          const: 4096
-        - title: 8TB
-          const: 8192
-        - title: 16TB
-          const: 16384
-    cidr:
-      title: Subnet CIDR
-      type: string
-      description: Specify a /28 CIDR range within your vnet to create subnet for the database. The subnet CIDR cannot be changed after creation.
-      $md.immutable: true
-      pattern: ^(?:10\.(?:[0-9]|[0-9]{2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])|172\.(?:1[6-9]|2[0-9]|3[0-1])|192\.168)(?:\.(?:[0-9]|[0-9]{2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){2}\/28$
-      message:
-        pattern: "Must be a /28 range from within the VNet CIDR"
-    backup_retention_days:
-      title: Backup Retention
-      description: How many days to retain MySQL database backups (minimum of 1, maximum of 35).
-      type: integer
-      default: 7
-      minimum: 1
-      maximum: 35
-    high_availability:
-      title: Enable High Availability (not available for North Central US)
-      type: boolean
-      default: false
+    database:
+      title: Database
+      type: object
+      required:
+        - mysql_version
+        - username
+        - sku_name
+        - storage_gb
+        - cidr
+      properties:
+        mysql_version:
+          title: Version
+          description: The version of MySQL to use. The version cannot be changed.
+          $md.immutable: true
+          type: string
+          default: "5.7"
+          enum:
+            - "8.0.21"
+            - "5.7"
+        username:
+          title: Username
+          description: The administrator login for the MySQL Flexible Server. Username cannot be changed after creation. (Username cannot be 'admin', 'root', 'administrator', 'username', 'azure_superuser', 'azure_pg_admin', 'guest', or 'public'.)
+          type: string
+          $md.immutable: true
+          not:
+            enum:
+              - admin
+              - root
+              - administrator
+              - username
+              - azure_superuser
+              - azure_pg_admin
+              - guest
+              - public
+        sku_name:
+          title: Compute size
+          description: Select the amount of cores, memory, and max iops you need for your workload (D = General Purpose, E = Memory Optimized).
+          type: string
+          oneOf:
+            - title: D2ds (2 vCores, 8 GiB memory, 3200 max iops)
+              const: GP_Standard_D2ds_v4
+            - title: D4ds (4 vCores, 16 GiB memory, 6400 max iops)
+              const: GP_Standard_D4ds_v4
+            - title: D8ds (8 vCores, 32 GiB memory, 12800 max iops)
+              const: GP_Standard_D8ds_v4
+            - title: D16ds (16 vCores, 64 GiB memory, 18000 max iops)
+              const: GP_Standard_D16ds_v4
+            - title: D32ds (32 vCores, 128 GiB memory, 18000 max iops)
+              const: GP_Standard_D32ds_v4
+            - title: D48ds (48 vCores, 192 GiB memory, 18000 max iops)
+              const: GP_Standard_D48ds_v4
+            - title: D64ds (64 vCores, 256 GiB memory, 18000 max iops)
+              const: GP_Standard_D64ds_v4
+            - title: E2ds (2 vCores, 16 GiB memory, 3200 max iops)
+              const: MO_Standard_E2ds_v4
+            - title: E4ds (4 vCores, 32 GiB memory, 6400 max iops)
+              const: MO_Standard_E4ds_v4
+            - title: E8ds (8 vCores, 64 GiB memory, 12800 max iops)
+              const: MO_Standard_E8ds_v4
+            - title: E16ds (16 vCores, 128 GiB memory, 18000 max iops)
+              const: MO_Standard_E16ds_v4
+            - title: E32ds (32 vCores, 256 GiB memory, 18000 max iops)
+              const: MO_Standard_E32ds_v4
+            - title: E48ds (48 vCores, 384 GiB memory, 18000 max iops)
+              const: MO_Standard_E48ds_v4
+            - title: E64ds (64 vCores, 432 GiB memory, 18000 max iops)
+              const: MO_Standard_E64ds_v4
+        storage_gb:
+          title: Storage
+          description: The storage you provision is the amount of storage capacity available to your Azure Database for MySQL server. Storage size cannot be scaled down.
+          type: integer
+          oneOf:
+            - title: 20GB
+              const: 20
+            - title: 32GB
+              const: 32
+            - title: 64GB
+              const: 64
+            - title: 128GB
+              const: 128
+            - title: 256GB
+              const: 256
+            - title: 512GB
+              const: 512
+            - title: 1TB
+              const: 1024
+            - title: 2TB
+              const: 2048
+            - title: 4TB
+              const: 4096
+            - title: 8TB
+              const: 8192
+            - title: 16TB
+              const: 16384
+        cidr:
+          title: Subnet CIDR
+          type: string
+          description: Specify a /28 CIDR range within your vnet to create subnet for the database. The subnet CIDR cannot be changed after creation.
+          $md.immutable: true
+          pattern: ^(?:10\.(?:[0-9]|[0-9]{2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])|172\.(?:1[6-9]|2[0-9]|3[0-1])|192\.168)(?:\.(?:[0-9]|[0-9]{2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){2}\/28$
+          message:
+            pattern: "Must be a /28 range from within the VNet CIDR"
+        high_availability:
+          title: Enable High Availability (not available for North Central US)
+          type: boolean
+          default: false
+    backup:
+      title: Backup
+      type: object
+      properties:
+        backup_retention_days:
+          title: Backup Retention
+          description: How many days to retain MySQL database backups (minimum of 1, maximum of 35).
+          type: integer
+          default: 7
+          minimum: 1
+          maximum: 35
 
 connections:
   required:
@@ -147,11 +159,19 @@ artifacts:
 
 ui:
   ui:order:
-    - mysql_version
-    - sku_name
-    - storage_gb
-    - username
-    - cidr
-    - backup_retention_days
-    - high_availability
+    - database
+    - backup
     - "*"
+  database:
+    ui:order:
+      - mysql_version
+      - sku_name
+      - storage_gb
+      - username
+      - cidr
+      - high_availability
+      - "*"
+  backup:
+    ui:order:
+      - backup_retention_days
+      - "*"

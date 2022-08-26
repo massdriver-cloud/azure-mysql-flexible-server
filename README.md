@@ -49,9 +49,9 @@ Form input parameters for configuring a bundle for deployment.
 <!-- PARAMS:START -->
 ## Properties
 
-- **`backup`** *(object)*: Cannot contain additional properties.
+- **`backup`** *(object)*
   - **`backup_retention_days`** *(integer)*: How many days to retain MySQL database backups (minimum of 1, maximum of 35). Minimum: `1`. Maximum: `35`. Default: `7`.
-- **`database`** *(object)*: Cannot contain additional properties.
+- **`database`** *(object)*
   - **`cidr`** *(string)*: Specify a /28 CIDR range within your vnet to create subnet for the database. The subnet CIDR cannot be changed after creation.
   - **`high_availability`** *(boolean)*: Default: `False`.
   - **`mysql_version`** *(string)*: The version of MySQL to use. The version cannot be changed. Must be one of: `['8.0.21', '5.7']`. Default: `5.7`.
@@ -130,7 +130,7 @@ Connections from other bundles that this bundle depends on.
 ## Properties
 
 - **`azure_service_principal`** *(object)*: . Cannot contain additional properties.
-  - **`data`** *(object)*: Cannot contain additional properties.
+  - **`data`** *(object)*
     - **`client_id`** *(string)*: A valid UUID field.
 
       Examples:
@@ -153,10 +153,10 @@ Connections from other bundles that this bundle depends on.
       "123xyz99-ab34-56cd-e7f8-456abc1q2w3e"
       ```
 
-  - **`specs`** *(object)*: Cannot contain additional properties.
+  - **`specs`** *(object)*
 - **`vnet`** *(object)*: . Cannot contain additional properties.
-  - **`data`** *(object)*: Cannot contain additional properties.
-    - **`infrastructure`** *(object)*: Cannot contain additional properties.
+  - **`data`** *(object)*
+    - **`infrastructure`** *(object)*
       - **`cidr`** *(string)*
 
         Examples:
@@ -182,8 +182,8 @@ Connections from other bundles that this bundle depends on.
         "/subscriptions/12345678-1234-1234-abcd-1234567890ab/resourceGroups/resource-group-name/providers/Microsoft.Network/virtualNetworks/network-name"
         ```
 
-  - **`specs`** *(object)*: Cannot contain additional properties.
-    - **`azure`** *(object)*: . Cannot contain additional properties.
+  - **`specs`** *(object)*
+    - **`azure`** *(object)*: .
       - **`region`** *(string)*: Select the Azure region you'd like to provision your resources in.
         - **One of**
           - East US
@@ -206,12 +206,12 @@ Resources created by this bundle that can be connected to other bundles.
 
 - **`authentication`** *(object)*: Authentication parameters for a MySQL database. Cannot contain additional properties.
   - **`data`** *(object)*: Cannot contain additional properties.
-    - **`authentication`** *(object)*: Cannot contain additional properties.
+    - **`authentication`** *(object)*
       - **`hostname`** *(string)*
       - **`password`** *(string)*
       - **`port`** *(integer)*: Port number. Minimum: `0`. Maximum: `65535`.
       - **`username`** *(string)*
-    - **`infrastructure`** *(object)*: Cloud specific MySQL configuration data. Can contain additional properties.
+    - **`infrastructure`** *(object)*: Cloud specific MySQL configuration data.
       - **One of**
         - AWS Infrastructure ARN*object*: Minimal AWS Infrastructure Config. Cannot contain additional properties.
           - **`arn`** *(string)*: Amazon Resource Name.
@@ -245,7 +245,7 @@ Resources created by this bundle that can be connected to other bundles.
             "my-sql-instance"
             ```
 
-    - **`security`** *(object)*: TBD. Can contain additional properties.
+    - **`security`** *(object)*: TBD.
       - **Any of**
         - AWS Security information*object*: Informs downstream services of network and/or IAM policies. Cannot contain additional properties.
           - **`iam`** *(object)*: IAM Policies. Cannot contain additional properties.
@@ -311,7 +311,7 @@ Resources created by this bundle that can be connected to other bundles.
                 ```
 
   - **`specs`** *(object)*: Cannot contain additional properties.
-    - **`rdbms`** *(object)*: Common metadata for relational databases. Cannot contain additional properties.
+    - **`rdbms`** *(object)*: Common metadata for relational databases.
       - **`engine`** *(string)*: The type of database server.
 
         Examples:

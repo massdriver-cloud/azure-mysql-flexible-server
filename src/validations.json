@@ -1,0 +1,5 @@
+{
+    "do_not_delete": [
+        "azurerm_mysql_flexible_server.main"
+    ]
+}

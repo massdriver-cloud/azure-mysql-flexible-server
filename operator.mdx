@@ -1,5 +1,50 @@
-# Operator Guide
+# azure-mysql-flexible-server
+Azure Database for MySQL Flexible Server is a fully managed MySQL database that strikes a balance between the ease of use of a managed service and the control and flexibility that drive many users to run their own MySQL servers. While you retain a level of control similar to self-hosting, Microsoft Azure makes onboarding easier and provides superior cost-efficiency and resiliency.
 
-This is the guide for your bundle. It will appear under the `guide` button in Massdriver.
+## Use Cases 
+MySQL is a common open-source relational database and one of the most popular databases in use today. Its use cases run the gamut from major websites like Facebook, Twitter, and Netflix to small self-hosted websites and everything in between.
+### Cloud applications
+MySQL is frequently used to power cloud applications. It can handle extremely large databases and supports a variety of ubiquitous applications including WordPress and Joomla.
+### E-Commerce
+MySQL is an essential part of many ecommerce platforms, where it is used to keep track of customer information and all kinds of business data.
+### LAMP stack
+MySQL is also commonly bundled with Linux, Apache, and PHP, Perl, or Python as the LAMP stack, which is often used for web development.
 
-Use it to describe to users how the bundle works, use cases for the bundle, and event examples.
+## Configuration Presets 
+### Development
+The development preset uses the Burstable SKU for the lowest price. The B1ms size is the smallest and cheapest available for the Burstable tier, and it provides 1 vCore, 2 GiB of memory, and 640 IOPS maximum. Storage has a preset size of 32 GB for user databases. The backup retention period is set to only one day because this configuration is intended as a development environment, which is also why high availability is set to false. Use this preset for development only.
+### Production
+The production preset uses the General Purpose SKU for balanced resources. The D2ds is a low-range tier which provides 2 vCores, 8 GiB of memory, and 3200 IOPS maximum. Storage has a preset size of 256 GB for a moderate number of production databases. The backup retention period is set to thirty days because this configuration is intended as a production environment, which is also why high availability is set to true. This preset has sufficient performance for production environments.
+
+## Design 
+Our bundle includes the following design choices to help simplify your deployment:
+### Adjust performance and scale within seconds
+Azure MySQL Flexible Server has three compute tiers, but we use only the General Purpose and Memory Optimized SKUs. General Purpose can support high concurrency, robust scaling, and consistent performance, so it is the preferred choice for production environments. If your use case is memory intensive, then we recommend using the Memory Optimized SKU, which has twice the memory per vCore compared to the General Purpose Tier.
+### High availability
+The flexible server ensures high availability by containerizing the database engine and storing three redundant copies of the database files. The failover process will automatically spin up a new VM and link it to the relevant files.
+### Virtual network integration
+We also automatically provision networking resources to make your flexible server available to other resources in your Azure virtual network. The flexible server is given its own exclusive subnet, and your virtual network is given a private DNS zone for your workloads to use.
+
+## Best Practices
+The bundle includes a number of best practices without needing any additional work on your part.
+### Dedicated virtual subnet
+We automatically provision a dedicated virtual network subnet with its own private DNS zone for VNet integration.
+### Automated backups
+The flexible-server service automatically creates server backups and stores them on zone-redundant storage (ZRS) within the region. Backups will persist for one to thirty-five days, depending on the preset you choose (as noted above). You will be able to restore your server to any point in time within the retention period.
+
+## Security 
+In order to improve security, we implement a few key safeguards. 
+### Auto-generated password
+Upon server creation, we generate a random sixteen-character password.
+### Private subnet deployment
+The flexible server will be accessible only from within the private VNet and any peered networks.
+### Data encrypted in transit
+By default, all data in transit will be encrypted with Secure Sockets Layer and Transport Layer Security (SSL/TLS).
+### Data encrypted at rest
+All data at rest, including backups and temporary files, will be encrypted with the FIPS 140-2 validated cryptographic module.
+
+## Observability 
+Massdriver provides you with visibility into the health of your systems. By default, flexible servers will be created with alarms connected to Massdriver to alert you when performance drops below a key threshold or fails completely. You will be notified when the memory, CPU, or storage load exceeds 90%.
+
+## Trade-offs 
+Currently, IOPS cannot be configured manually.  It will be set automatically depending on the storage size and compute SKU.

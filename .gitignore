@@ -7,8 +7,7 @@ schema-artifacts.json
 schema-ui.json
 artifacts.json
 _*_variables.tf.json
-dev.tfvars.json
-dev.*.tfvars.json
+*.tfvars.json
 
 # Auth files will be generated at runtime, shouldn't be checked in
 **/auth/*

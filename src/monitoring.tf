@@ -1,16 +1,36 @@
 locals {
-  scope_config = {
-    severity    = "1"
-    frequency   = "PT1M"
-    window_size = "PT5M"
+  automated_alarms = {
+    cpu_metric_alert = {
+      severity    = "1"
+      frequency   = "PT1M"
+      window_size = "PT5M"
+      operator    = "GreaterThan"
+      aggregation = "Average"
+      threshold   = 90
+    }
+    memory_metric_alert = {
+      severity    = "1"
+      frequency   = "PT1M"
+      window_size = "PT5M"
+      operator    = "GreaterThan"
+      aggregation = "Average"
+      threshold   = 90
+    }
+    storage_metric_alert = {
+      severity    = "1"
+      frequency   = "PT1M"
+      window_size = "PT5M"
+      operator    = "GreaterThan"
+      aggregation = "Average"
+      threshold   = 80
+    }
   }
-  metric_config = {
-    operator          = "GreaterThan"
-    aggregation       = "Average"
-    threshold_cpu     = 90
-    threshold_memory  = 90
-    threshold_storage = 90
+  alarms_map = {
+    "AUTOMATED" = local.automated_alarms
+    "DISABLED"  = {}
+    "CUSTOM"    = lookup(var.monitoring, "alarms", {})
   }
+  alarms = lookup(local.alarms_map, var.monitoring.mode, {})
 }
 
 module "alarm_channel" {
@@ -24,9 +44,9 @@ module "cpu_metric_alert" {
   scopes                  = [azurerm_mysql_flexible_server.main.id]
   resource_group_name     = azurerm_resource_group.main.name
   monitor_action_group_id = module.alarm_channel.id
-  severity                = local.scope_config.severity
-  frequency               = local.scope_config.frequency
-  window_size             = local.scope_config.window_size
+  severity                = local.alarms.cpu_metric_alert.severity
+  frequency               = local.alarms.cpu_metric_alert.frequency
+  window_size             = local.alarms.cpu_metric_alert.window_size
 
   depends_on = [
     azurerm_mysql_flexible_server.main
@@ -37,11 +57,11 @@ module "cpu_metric_alert" {
   message      = "High CPU Usage"
 
   alarm_name       = "${var.md_metadata.name_prefix}-highCPUUsage"
-  operator         = local.metric_config.operator
+  operator         = local.alarms.cpu_metric_alert.operator
   metric_name      = "cpu_percent"
   metric_namespace = "Microsoft.DBforMySQL/flexibleServers"
-  aggregation      = local.metric_config.aggregation
-  threshold        = local.metric_config.threshold_cpu
+  aggregation      = local.alarms.cpu_metric_alert.aggregation
+  threshold        = local.alarms.cpu_metric_alert.threshold
 }
 
 module "memory_metric_alert" {
@@ -49,9 +69,9 @@ module "memory_metric_alert" {
   scopes                  = [azurerm_mysql_flexible_server.main.id]
   resource_group_name     = azurerm_resource_group.main.name
   monitor_action_group_id = module.alarm_channel.id
-  severity                = local.scope_config.severity
-  frequency               = local.scope_config.frequency
-  window_size             = local.scope_config.window_size
+  severity                = local.alarms.memory_metric_alert.severity
+  frequency               = local.alarms.memory_metric_alert.frequency
+  window_size             = local.alarms.memory_metric_alert.window_size
 
   depends_on = [
     azurerm_mysql_flexible_server.main
@@ -62,11 +82,11 @@ module "memory_metric_alert" {
   message      = "High Memory Usage"
 
   alarm_name       = "${var.md_metadata.name_prefix}-highMemoryUsage"
-  operator         = local.metric_config.operator
+  operator         = local.alarms.memory_metric_alert.operator
   metric_name      = "memory_percent"
   metric_namespace = "Microsoft.DBforMySQL/flexibleServers"
-  aggregation      = local.metric_config.aggregation
-  threshold        = local.metric_config.threshold_memory
+  aggregation      = local.alarms.memory_metric_alert.aggregation
+  threshold        = local.alarms.memory_metric_alert.threshold
 }
 
 module "storage_metric_alert" {
@@ -74,9 +94,9 @@ module "storage_metric_alert" {
   scopes                  = [azurerm_mysql_flexible_server.main.id]
   resource_group_name     = azurerm_resource_group.main.name
   monitor_action_group_id = module.alarm_channel.id
-  severity                = local.scope_config.severity
-  frequency               = local.scope_config.frequency
-  window_size             = local.scope_config.window_size
+  severity                = local.alarms.storage_metric_alert.severity
+  frequency               = local.alarms.storage_metric_alert.frequency
+  window_size             = local.alarms.storage_metric_alert.window_size
 
   depends_on = [
     azurerm_mysql_flexible_server.main
@@ -87,9 +107,9 @@ module "storage_metric_alert" {
   message      = "High Storage Usage"
 
   alarm_name       = "${var.md_metadata.name_prefix}-highStorageUsage"
-  operator         = local.metric_config.operator
+  operator         = local.alarms.storage_metric_alert.operator
   metric_name      = "storage_percent"
   metric_namespace = "Microsoft.DBforMySQL/flexibleServers"
-  aggregation      = local.metric_config.aggregation
-  threshold        = local.metric_config.threshold_storage
+  aggregation      = local.alarms.storage_metric_alert.aggregation
+  threshold        = local.alarms.storage_metric_alert.threshold
 }

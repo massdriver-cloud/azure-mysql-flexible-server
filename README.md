@@ -59,7 +59,7 @@ Form input parameters for configuring a bundle for deployment.
 - **`backup`** *(object)*
   - **`backup_retention_days`** *(integer)*: How many days to retain MySQL database backups (minimum of 1, maximum of 35). Minimum: `1`. Maximum: `35`. Default: `7`.
 - **`database`** *(object)*
-  - **`cidr`** *(string)*: Specify a /28 CIDR range within your vnet to create subnet for the database. The subnet CIDR cannot be changed after creation.
+  - **`cidr`** *(string)*: Specify a /28 CIDR range within your VNet to create subnet for the database. The subnet CIDR cannot be changed after creation.
   - **`high_availability`** *(boolean)*: Default: `False`.
   - **`mysql_version`** *(string)*: The version of MySQL to use. The version cannot be changed. Must be one of: `['8.0.21', '5.7']`. Default: `5.7`.
   - **`sku_name`** *(string)*: Select the amount of cores, memory, and max iops you need for your workload (D = General Purpose, E = Memory Optimized).
@@ -167,7 +167,7 @@ Connections from other bundles that this bundle depends on.
       ```
 
   - **`specs`** *(object)*
-- **`vnet`** *(object)*: . Cannot contain additional properties.
+- **`azure_virtual_network`** *(object)*: . Cannot contain additional properties.
   - **`data`** *(object)*
     - **`infrastructure`** *(object)*
       - **`cidr`** *(string)*

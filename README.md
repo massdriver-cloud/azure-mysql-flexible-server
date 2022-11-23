@@ -98,6 +98,8 @@ Form input parameters for configuring a bundle for deployment.
       - Automated
       - Custom
       - Disabled
+- **`network`** *(object)*
+  - **`auto`** *(boolean)*: Enabling this will automatically select an available CIDR range for your database. Unchecking will require you to specify the CIDR. Default: `True`.
 ## Examples
 
   ```json

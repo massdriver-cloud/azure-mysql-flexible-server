@@ -123,6 +123,7 @@ params:
         backup_retention_days: 30
   required:
     - database
+    - network
     - backup
     - monitoring
   properties:
@@ -232,6 +233,35 @@ params:
           title: Enable High Availability (not available for North Central US)
           type: boolean
           default: false
+    network:
+      type: object
+      title: Networking
+      properties:
+        auto:
+          title: Automatic CIDR Selection
+          type: boolean
+          description: Enabling this will automatically select an available CIDR range for your database. Unchecking will require you to specify the CIDR.
+          default: true
+          $md.immutable: true
+      dependencies:
+        auto:
+          oneOf:
+          - properties:
+              auto:
+                const: true
+          - properties:
+              auto:
+                const: false
+              cidr:
+                title: Subnet CIDR
+                type: string
+                description: Specify a /28 CIDR range within your vnet to create subnet for the database. The subnet CIDR cannot be changed after creation.
+                $md.immutable: true
+                pattern: ^(?:10\.(?:[0-9]|[0-9]{2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])|172\.(?:1[6-9]|2[0-9]|3[0-1])|192\.168)(?:\.(?:[0-9]|[0-9]{2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){2}\/28$
+                message:
+                  pattern: "Must be a /28 range from within the VNet CIDR"
+            required:
+            - cidr
     backup:
       title: Backup
       type: object
@@ -308,6 +338,7 @@ artifacts:
 ui:
   ui:order:
     - database
+    - network
     - backup
     - monitoring
     - "*"
@@ -319,6 +350,11 @@ ui:
       - username
       - cidr
       - high_availability
+      - "*"
+  network:
+    ui:order:
+      - auto
+      - cidr
       - "*"
   backup:
     ui:order:

@@ -135,7 +135,6 @@ params:
         - username
         - sku_name
         - storage_gb
-        - cidr
       properties:
         mysql_version:
           title: Version
@@ -221,14 +220,6 @@ params:
               const: 8192
             - title: 16TB
               const: 16384
-        cidr:
-          title: Subnet CIDR
-          type: string
-          description: Specify a /28 CIDR range within your VNet to create subnet for the database. The subnet CIDR cannot be changed after creation.
-          $md.immutable: true
-          pattern: ^(?:10\.(?:[0-9]|[0-9]{2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])|172\.(?:1[6-9]|2[0-9]|3[0-1])|192\.168)(?:\.(?:[0-9]|[0-9]{2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){2}\/28$
-          message:
-            pattern: "Must be a /28 range from within the VNet CIDR"
         high_availability:
           title: Enable High Availability (not available for North Central US)
           type: boolean
@@ -348,7 +339,6 @@ ui:
       - sku_name
       - storage_gb
       - username
-      - cidr
       - high_availability
       - "*"
   network:

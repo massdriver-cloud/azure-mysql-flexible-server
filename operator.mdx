@@ -16,6 +16,10 @@ The development preset uses the Burstable SKU for the lowest price. The B1ms siz
 ### Production
 The production preset uses the General Purpose SKU for balanced resources. The D2ds is a low-range tier which provides 2 vCores, 8 GiB of memory, and 3200 IOPS maximum. Storage has a preset size of 256 GB for a moderate number of production databases. The backup retention period is set to thirty days because this configuration is intended as a production environment, which is also why high availability is set to true. This preset has sufficient performance for production environments.
 
+## Features
+### Auto CIDR
+The Masssdriver Auto CIDR feature takes the burden of selecting a CIDR range away from you by determining the next available CIDR range and automatically provisions it. You still have the option to manually set your CIDR range if you prefer.
+
 ## Design 
 Our bundle includes the following design choices to help simplify your deployment:
 ### Adjust performance and scale within seconds

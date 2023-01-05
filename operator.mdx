@@ -10,7 +10,7 @@ MySQL is an essential part of many ecommerce platforms, where it is used to keep
 ### LAMP stack
 MySQL is also commonly bundled with Linux, Apache, and PHP, Perl, or Python as the LAMP stack, which is often used for web development.
 
-## Configuration Presets 
+## Configuration Presets
 ### Development
 The development preset uses the Burstable SKU for the lowest price. The B1ms size is the smallest and cheapest available for the Burstable tier, and it provides 1 vCore, 2 GiB of memory, and 640 IOPS maximum. Storage has a preset size of 32 GB for user databases. The backup retention period is set to only one day because this configuration is intended as a development environment, which is also why high availability is set to false. Use this preset for development only.
 ### Production
@@ -51,4 +51,5 @@ All data at rest, including backups and temporary files, will be encrypted with 
 Massdriver provides you with visibility into the health of your systems. By default, flexible servers will be created with alarms connected to Massdriver to alert you when performance drops below a key threshold or fails completely. You will be notified when the memory, CPU, or storage load exceeds 90%.
 
 ## Trade-offs 
+**Only East US is available** as a region for MySQL Flexible servers due to datacenter capacity issues (as of 1/4/2023).
 Currently, IOPS cannot be configured manually.  It will be set automatically depending on the storage size and compute SKU.

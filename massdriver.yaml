@@ -2,7 +2,7 @@ schema: draft-07
 name: "azure-mysql-flexible-server"
 description: "Azure Database for MySQL Flexible Server is a fully managed production-ready database service designed for more granular control and flexibility over database management functions and configuration settings."
 source_url: github.com/massdriver-cloud/azure-mysql-flexible-server
-access: "private"
+access: "public"
 type: "bundle"
 
 MonitorAlarmMetric: &monitor_alarm_metric
@@ -315,6 +315,7 @@ ui:
     sku_name:
       ui:field: "instanceTypesDropdown"
       query: "connections.azure_virtual_network.specs.azure.region"
+      service: "Microsoft.DBforMySQL"
   network:
     ui:order:
       - auto

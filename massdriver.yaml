@@ -164,35 +164,6 @@ params:
           title: Compute size
           description: Select the amount of cores, memory, and max iops you need for your workload (D = General Purpose, E = Memory Optimized).
           type: string
-          oneOf:
-            - title: D2ds (2 vCores, 8 GiB memory, 3200 max iops)
-              const: GP_Standard_D2ds_v4
-            - title: D4ds (4 vCores, 16 GiB memory, 6400 max iops)
-              const: GP_Standard_D4ds_v4
-            - title: D8ds (8 vCores, 32 GiB memory, 12800 max iops)
-              const: GP_Standard_D8ds_v4
-            - title: D16ds (16 vCores, 64 GiB memory, 18000 max iops)
-              const: GP_Standard_D16ds_v4
-            - title: D32ds (32 vCores, 128 GiB memory, 18000 max iops)
-              const: GP_Standard_D32ds_v4
-            - title: D48ds (48 vCores, 192 GiB memory, 18000 max iops)
-              const: GP_Standard_D48ds_v4
-            - title: D64ds (64 vCores, 256 GiB memory, 18000 max iops)
-              const: GP_Standard_D64ds_v4
-            - title: E2ds (2 vCores, 16 GiB memory, 3200 max iops)
-              const: MO_Standard_E2ds_v4
-            - title: E4ds (4 vCores, 32 GiB memory, 6400 max iops)
-              const: MO_Standard_E4ds_v4
-            - title: E8ds (8 vCores, 64 GiB memory, 12800 max iops)
-              const: MO_Standard_E8ds_v4
-            - title: E16ds (16 vCores, 128 GiB memory, 18000 max iops)
-              const: MO_Standard_E16ds_v4
-            - title: E32ds (32 vCores, 256 GiB memory, 18000 max iops)
-              const: MO_Standard_E32ds_v4
-            - title: E48ds (48 vCores, 384 GiB memory, 18000 max iops)
-              const: MO_Standard_E48ds_v4
-            - title: E64ds (64 vCores, 432 GiB memory, 18000 max iops)
-              const: MO_Standard_E64ds_v4
         storage_gb:
           title: Storage
           description: The storage you provision is the amount of storage capacity available to your Azure Database for MySQL server. Storage size cannot be scaled down.
@@ -341,6 +312,9 @@ ui:
       - username
       - high_availability
       - "*"
+    sku_name:
+      ui:field: "instanceTypesDropdown"
+      query: "connections.azure_virtual_network.specs.azure.region"
   network:
     ui:order:
       - auto

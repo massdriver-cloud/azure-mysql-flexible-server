@@ -59,25 +59,9 @@ Form input parameters for configuring a bundle for deployment.
 - **`backup`** *(object)*
   - **`backup_retention_days`** *(integer)*: How many days to retain MySQL database backups (minimum of 1, maximum of 35). Minimum: `1`. Maximum: `35`. Default: `7`.
 - **`database`** *(object)*
-  - **`cidr`** *(string)*: Specify a /28 CIDR range within your VNet to create subnet for the database. The subnet CIDR cannot be changed after creation.
   - **`high_availability`** *(boolean)*: Default: `False`.
   - **`mysql_version`** *(string)*: The version of MySQL to use. The version cannot be changed. Must be one of: `['8.0.21', '5.7']`. Default: `5.7`.
   - **`sku_name`** *(string)*: Select the amount of cores, memory, and max iops you need for your workload (D = General Purpose, E = Memory Optimized).
-    - **One of**
-      - D2ds (2 vCores, 8 GiB memory, 3200 max iops)
-      - D4ds (4 vCores, 16 GiB memory, 6400 max iops)
-      - D8ds (8 vCores, 32 GiB memory, 12800 max iops)
-      - D16ds (16 vCores, 64 GiB memory, 18000 max iops)
-      - D32ds (32 vCores, 128 GiB memory, 18000 max iops)
-      - D48ds (48 vCores, 192 GiB memory, 18000 max iops)
-      - D64ds (64 vCores, 256 GiB memory, 18000 max iops)
-      - E2ds (2 vCores, 16 GiB memory, 3200 max iops)
-      - E4ds (4 vCores, 32 GiB memory, 6400 max iops)
-      - E8ds (8 vCores, 64 GiB memory, 12800 max iops)
-      - E16ds (16 vCores, 128 GiB memory, 18000 max iops)
-      - E32ds (32 vCores, 256 GiB memory, 18000 max iops)
-      - E48ds (48 vCores, 384 GiB memory, 18000 max iops)
-      - E64ds (64 vCores, 432 GiB memory, 18000 max iops)
   - **`storage_gb`** *(integer)*: The storage you provision is the amount of storage capacity available to your Azure Database for MySQL server. Storage size cannot be scaled down.
     - **One of**
       - 20GB
@@ -200,11 +184,6 @@ Connections from other bundles that this bundle depends on.
   - **`specs`** *(object)*
     - **`azure`** *(object)*: .
       - **`region`** *(string)*: Select the Azure region you'd like to provision your resources in.
-        - **One of**
-          - East US
-          - North Central US
-          - South Central US
-          - West US
 <!-- CONNECTIONS:END -->
 
 </details>
@@ -276,6 +255,18 @@ Resources created by this bundle that can be connected to other bundles.
                 "arn:aws:ec2::ACCOUNT_NUMBER:vpc/vpc-foo"
                 ```
 
+          - **`identity`** *(object)*: For instances where IAM policies must be attached to a role attached to an AWS resource, for instance AWS Eventbridge to Firehose, this attribute should be used to allow the downstream to attach it's policies (Firehose) directly to the IAM role created by the upstream (Eventbridge). It is important to remember that connections in massdriver are one way, this scheme perserves the dependency relationship while allowing bundles to control the lifecycles of resources under it's management. Cannot contain additional properties.
+            - **`role_arn`** *(string)*: ARN for this resources IAM Role.
+
+              Examples:
+              ```json
+              "arn:aws:rds::ACCOUNT_NUMBER:db/prod"
+              ```
+
+              ```json
+              "arn:aws:ec2::ACCOUNT_NUMBER:vpc/vpc-foo"
+              ```
+
           - **`network`** *(object)*: AWS security group rules to inform downstream services of ports to open for communication. Cannot contain additional properties.
             - **`^[a-z-]+$`** *(object)*
               - **`arn`** *(string)*: Amazon Resource Name.
@@ -293,7 +284,7 @@ Resources created by this bundle that can be connected to other bundles.
               - **`protocol`** *(string)*: Must be one of: `['tcp', 'udp']`.
         - Security*object*: Azure Security Configuration. Cannot contain additional properties.
           - **`iam`** *(object)*: IAM Roles And Scopes. Cannot contain additional properties.
-            - **`^[a-z/-]+$`** *(object)*
+            - **`^[a-z]+[a-z_]*[a-z]$`** *(object)*
               - **`role`**: Azure Role.
 
                 Examples:

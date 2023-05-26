@@ -150,6 +150,9 @@ params:
           description: The administrator login for the MySQL Flexible Server. Username cannot be changed after creation. (Username cannot be 'admin', 'root', 'administrator', 'username', 'azure_superuser', 'azure_pg_admin', 'guest', or 'public'.)
           type: string
           $md.immutable: true
+          pattern: ^[a-z][a-z0-9]+$
+          message:
+            pattern: Admin username cannot start with numbers and must only contain characters and numbers.
           not:
             enum:
               - admin

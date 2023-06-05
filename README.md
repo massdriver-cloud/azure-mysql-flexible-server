@@ -255,7 +255,7 @@ Resources created by this bundle that can be connected to other bundles.
                 "arn:aws:ec2::ACCOUNT_NUMBER:vpc/vpc-foo"
                 ```
 
-          - **`identity`** *(object)*: For instances where IAM policies must be attached to a role attached to an AWS resource, for instance AWS Eventbridge to Firehose, this attribute should be used to allow the downstream to attach it's policies (Firehose) directly to the IAM role created by the upstream (Eventbridge). It is important to remember that connections in massdriver are one way, this scheme perserves the dependency relationship while allowing bundles to control the lifecycles of resources under it's management. Cannot contain additional properties.
+          - **`identity`** *(object)*: For instances where IAM policies must be attached to a role attached to an AWS resource, for instance AWS Eventbridge to Firehose, this attribute should be used to allow the downstream to attach its policies (Firehose) directly to the IAM role created by the upstream (Eventbridge). It is important to remember that connections in massdriver are one way, this scheme preserves the dependency relationship while allowing bundles to control the lifecycles of resources under it's management. Cannot contain additional properties.
             - **`role_arn`** *(string)*: ARN for this resources IAM Role.
 
               Examples:

@@ -14,6 +14,8 @@ Azure MySQL Flexible Server is a managed service provided by Microsoft Azure for
 
 #### Unable to Connect to MySQL Server
 
+**Note:** MySQL bundle is configured to be isolated on the virtual network. By design, it refuses connection attempts made from outside of the virtual network. To connect, you may need to configure VPN or a jump box.
+
 One common issue might be an inability to connect to the MySQL server. This can be due to various network, configuration, or credential problems.
 
 Check network connectivity to the MySQL server:

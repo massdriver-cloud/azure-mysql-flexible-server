@@ -3,7 +3,6 @@ name: azure-mysql-flexible-server
 version: 1.0.0
 description: Azure Database for MySQL Flexible Server is a fully managed production-ready database service designed for more granular control and flexibility over database management functions and configuration settings.
 source_url: https://github.com/massdriver-cloud/azure-mysql-flexible-server
-type: application
 MonitorAlarmMetric:
   required: &1
   - severity

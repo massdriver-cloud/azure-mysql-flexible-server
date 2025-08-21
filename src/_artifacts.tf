@@ -12,9 +12,8 @@ locals {
 }
 
 resource "massdriver_artifact" "authentication" {
-  field                = "authentication"
-  provider_resource_id = azurerm_mysql_flexible_server.main.id
-  name                 = "MySQL Server ${var.md_metadata.name_prefix} (${azurerm_mysql_flexible_server.main.id})"
+  field    = "authentication"
+  name     = "MySQL Server ${var.md_metadata.name_prefix} (${azurerm_mysql_flexible_server.main.id})"
   artifact = jsonencode(
     {
       data = {
